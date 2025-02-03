@@ -14,10 +14,18 @@ class TestBooksCollector:
         collector.add_new_book(name)
         assert len(collector.books_genre) == 0
 
-    def test_set_book_genre_add_genre_to_book(self, collector):
-        collector.add_new_book('Война и Мир')
-        collector.set_book_genre('Война и Мир', 'Детективы')
-        assert collector.books_genre['Война и Мир'] == 'Детективы'
+    @pytest.mark.parametrize('name, genre',
+                             [
+                                 ['Война и Мир', 'Детективы'],
+                                 ['Задача трех тел', 'Фантастика'],
+                                 ['Чужак', 'Ужасы'],
+                                 ['Хеллсинг', 'Мультфильмы'],
+                                 ['Крутой учитель Онидзука', 'Комедии']
+                             ])
+    def test_set_book_genre_add_genre_to_book(self, collector, name, genre):
+        collector.add_new_book(name)
+        collector.set_book_genre(name, genre)
+        assert collector.books_genre[name] == genre
 
     def test_get_book_genre_existing_book(self, collector):
         collector.add_new_book('Нетопырь')
